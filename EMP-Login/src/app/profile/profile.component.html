@@ -1,0 +1,10 @@
+<div class="card profile-area">
+  <div class="card-body">
+    <h3>Profile</h3>
+    <img src="{{profile?.picture}}" class="avatar" alt="avatar">
+    <div>
+      <h2 class="nickname">{{ profile?.nickname }}</h2>
+    </div>
+    <pre class="full-profile">{{ profile | json }}</pre>
+  </div>
+</div>

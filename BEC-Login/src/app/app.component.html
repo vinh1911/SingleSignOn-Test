@@ -1,0 +1,37 @@
+<nav class="navbar navbar-light bg-light mb-4">
+  <div class="container">
+    <a class="navbar-brand" href="#">BEC - Login</a>
+    <form class="form-inline">
+        <button class="btn btn-success mx-1" routerLink="/">
+          Home
+        </button>
+    
+        <button class="btn btn-success mx-1" *ngIf="auth.isAuthenticated()" routerLink="/profile">
+          Profile
+        </button>
+    
+        <button class="btn btn-success mx-1" *ngIf="auth.isAuthenticated()" (click)="auth.renewTokens()">
+          Renew
+        </button>
+    
+        <button id="qsLoginBtn" class="btn btn-outline-primary mx-1" *ngIf="!auth.isAuthenticated()" (click)="auth.login()">
+          Log In
+        </button>
+    
+        <button id="qsLogoutBtn" class="btn btn-outline-secondary mx-1" *ngIf="auth.isAuthenticated()" (click)="auth.logout()">
+          Log Out
+        </button>
+    </form>
+  </div>
+</nav>
+
+<main class="container">
+  <router-outlet></router-outlet>
+</main>
+
+<div class="overlay" *ngIf="shouldDisplayOverlay">
+  <div>
+    <img src="assets/loading.svg" alt="loading">
+    <h4>Checking for SSO session...</h4>
+  </div>
+</div>
