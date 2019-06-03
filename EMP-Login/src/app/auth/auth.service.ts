@@ -11,12 +11,13 @@ export class AuthService {
     clientID: AUTH_CONFIG.clientID,
     domain: AUTH_CONFIG.domain,
     redirectUri: AUTH_CONFIG.callbackURL,
-    responseType: 'token id_token',
-    scope: 'openid',
+    responseType: 'token',
+    scope: 'openid profile',
     audience: 'https://localhost:5001/api/values'
   });
 
   // tslint:disable: variable-name
+  private _idToken: string;
   private _accessToken: string;
   private _expiresAt: number;
 
@@ -28,14 +29,18 @@ export class AuthService {
   );
 
   constructor(public router: Router) {
+    this._idToken = '';
     this._accessToken = '';
     this._expiresAt = 0;
+  }
+
+  get idToken(): string {
+    return this._idToken;
   }
 
   get accessToken(): string {
     return this._accessToken;
   }
-
 
   get expiresAt(): number {
     return this._expiresAt;
@@ -60,23 +65,24 @@ export class AuthService {
     });
   }
 
-  public getProfile(cb): void {
-    if (!this._accessToken) {
-      throw new Error('Access token must exist to fetch profile');
-    }
-
-    const self = this;
-    this.auth0.client.userInfo(this._accessToken, (err, profile) => {
-      if (profile) {
-        self.userProfile = profile;
+  public renewTokens() {
+    this.auth0.checkSession({}, (err, authResult) => {
+      if (authResult && authResult.accessToken) {
+        console.log('Renew tokens called');
+        console.log(authResult);
+        this.localLogin(authResult);
+        this.observer.next(true);
+      } else if (err) {
+        console.log(`Could not get a new token (${err.error}: ${err.error_description}).`);
+        this.observer.next(true);
       }
-      cb(err, profile);
     });
   }
 
   private localLogin(authResult): void {
     // Set the time that the access token will expire at
     const expiresAt = authResult.expiresIn * 1000 + Date.now();
+    this._idToken = authResult.idToken;
     this._accessToken = authResult.accessToken;
     this._expiresAt = expiresAt;
 
@@ -85,6 +91,7 @@ export class AuthService {
 
   public logout(): void {
     // Remove tokens and expiry time
+    this._idToken = '';
     this._accessToken = '';
     this._expiresAt = 0;
     this.unscheduleRenewal();
@@ -100,17 +107,16 @@ export class AuthService {
     return this._accessToken && Date.now() < this._expiresAt;
   }
 
-  public renewTokens() {
-    this.auth0.checkSession({}, (err, result) => {
-      if (result && result.accessToken && result.idToken) {
-        console.log('Renew tokens called');
-        console.log(result);
-        this.localLogin(result);
-        this.observer.next(true);
-      } else if (err) {
-        console.log(`Could not get a new token (${err.error}: ${err.error_description}).`);
-        this.observer.next(true);
+  public getProfile(cb): void {
+    if (!this._accessToken) {
+      throw new Error('Access token must exist to fetch profile');
+    }
+    const self = this;
+    this.auth0.client.userInfo(this._accessToken, (err, profile) => {
+      if (profile) {
+        self.userProfile = profile;
       }
+      cb(err, profile);
     });
   }
 
