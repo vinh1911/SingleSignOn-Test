@@ -1,14 +1,8 @@
 <nav class="navbar navbar-light bg-light mb-4">
   <div class="container justify-content-start">
     <a class="navbar-brand" href="#">EMP - Login</a>
-    <!-- <form class="form-inline ml-1 mr-auto">
-      <select class="custom-select">
-        <option (click)="auth.acceptLanguage('en-US')" selected>en-US</option>
-        <option (click)="console.log('ahihi')">de-DE</option>
-      </select>
-    </form> -->
     <div ngbDropdown class="d-inline-block ml-1 mr-auto">
-      <button class="btn btn-outline-secondary" id="dropdown" ngbDropdownToggle> Language: {{auth.acceptLanguage}} </button>
+      <button class="btn btn-outline-secondary" id="dropdown" ngbDropdownToggle> {{auth.acceptLanguage}} </button>
       <div ngbDropdownMenu aria-labelledby="dropdown">
         <button ngbDropdownItem (click)="auth.setAcceptLanguage('en-US')">en-US</button>
         <button ngbDropdownItem (click)="auth.setAcceptLanguage('de-DE')">de-DE</button>
