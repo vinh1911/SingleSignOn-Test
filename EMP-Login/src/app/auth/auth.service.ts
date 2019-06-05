@@ -20,6 +20,7 @@ export class AuthService {
   private _idToken: string;
   private _accessToken: string;
   private _expiresAt: number;
+  private _acceptLanguage: string;
 
   userProfile: any;
   refreshSubscription: any;
@@ -32,6 +33,7 @@ export class AuthService {
     this._idToken = '';
     this._accessToken = '';
     this._expiresAt = 0;
+    this._acceptLanguage = 'en-US';
   }
 
   get idToken(): string {
@@ -44,6 +46,14 @@ export class AuthService {
 
   get expiresAt(): number {
     return this._expiresAt;
+  }
+
+  get acceptLanguage(): string {
+    return this._acceptLanguage;
+  }
+
+  setAcceptLanguage(ye: string) {
+    this._acceptLanguage = ye;
   }
 
   public login(): void {

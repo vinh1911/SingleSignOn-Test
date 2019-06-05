@@ -13,12 +13,16 @@ export class HttpRequestInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.auth.accessToken;
-
+    const language = this.auth.acceptLanguage;
     if (token) {
       const newReq = req.clone(
         {
-           headers: req.headers.set('Authorization', 'Bearer ' + token)
+          headers: req.headers
+            .set('Content-Type', 'application/json')
+            .set('Authorization', 'Bearer ' + token)
+            .set('Accept-Language', language)
         });
+      console.log(newReq);
       return next.handle(newReq);
     } else {
       return next.handle(req);

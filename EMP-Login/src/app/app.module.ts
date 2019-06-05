@@ -13,6 +13,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { CallbackComponent } from './callback/callback.component';
 import { ApiService } from './api/api.service';
 
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 
 
 @NgModule({
@@ -27,7 +29,8 @@ import { ApiService } from './api/api.service';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    HttpInterceptorModule
+    HttpInterceptorModule,
+    NgbModule
   ],
   providers: [AuthService, ApiService],
   bootstrap: [AppComponent]
