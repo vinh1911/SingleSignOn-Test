@@ -20,7 +20,7 @@
     "@angular/platform-browser-dynamic": "~8.0.0",
     "@angular/router": "~8.0.0",
     "@ng-bootstrap/ng-bootstrap": "^4.2.1",
-    "auth0-js": "^9.10.4",
+    "auth0-js": "^9.13.2",
     "auth0-lock": "^11.16.0",
     "bootstrap": "^4.3.1",
     "core-js": "^3.1.3",
